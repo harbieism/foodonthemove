@@ -54,6 +54,9 @@ class Account(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    is_paying = models.BooleanField(default=False)
+    payment_amount = models.FloatField(null=True)
+
     objects = AccountManager()
 
     USERNAME_FIELD = 'username'
