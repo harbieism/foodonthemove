@@ -6,7 +6,7 @@ import datetime
 
 
 class AccountManager(BaseUserManager):
-    def create_user(self, **kwarg):
+    def create_user(self, **kwargs):
         username = kwargs.get('username')
         number = kwargs.get('phone_number')
         if not username:
@@ -43,8 +43,8 @@ class Account(AbstractBaseUser):
     contact_call = models.BooleanField(default=False)
     contact_email = models.BooleanField(default=False)
 
-    first_name = models.CharField(max_length=40)
-    last_name = models.CharField(max_length=40)
+    first_name = models.CharField(max_length=40, blank=True)
+    last_name = models.CharField(max_length=40, blank=True)
 
     is_admin = models.BooleanField(default=False)
 
