@@ -37,7 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'crispy_forms',
     'foodonthemove',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,3 +100,5 @@ STATICFILES_DIRS = (
 )
 
 AUTH_USER_MODEL = 'foodonthemove.Account'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
