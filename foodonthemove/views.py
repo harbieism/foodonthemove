@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from foodonthemove.models import Account
-from foodonthemove.forms import AccountForm
 from django.core.urlresolvers import reverse
 from foodonthemove.serializers import AccountSerializer
 from django.http import HttpResponse, HttpResponseRedirect
@@ -89,10 +88,9 @@ def register(request):
                         password=password
                     )
                 print account
-        
+
         return HttpResponseRedirect(reverse('index'))
 
 
     elif request.method == "GET":
-        form = AccountForm()
-        return render(request, 'foodonthemove/register.html', {'form': form})
+        return render(request, 'foodonthemove/register.html')
