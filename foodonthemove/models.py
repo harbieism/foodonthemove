@@ -8,18 +8,45 @@ import datetime
 class AccountManager(BaseUserManager):
     def create_user(self, **kwargs):
         username = kwargs.get('username')
-        number = kwargs.get('phone_number')
         if not username:
             raise ValueError('Users must have a valid username or equivalent')
-
+        number = kwargs.get('phone_number')
         if number:
             number = ''.join(c for c in number if c.isdigit())
         email = self.normalize_email(kwargs.get('email'))
+        print kwargs.get('payment_amount')
 
-        account = self.model(
-            username=username,
-            is_admin=False,
-        )
+        is_paying = kwargs.get('is_paying')
+
+        if is_paying:
+            account = self.model(
+                username=username,
+                is_admin=False,
+                email=email,
+                phone_number=number,
+                contact_email=kwargs.get('contact_email'),
+                contact_call=kwargs.get('contact_call'),
+                contact_text=kwargs.get('contact_text'),
+                first_name=kwargs.get('first_name'),
+                last_name=kwargs.get('last_name'),
+                zip_code=kwargs.get('zip_code'),
+                is_paying=kwargs.get('is_paying'),
+                payment_amount=float(kwargs.get('payment_amount'))
+            )
+        else:
+            account = self.model(
+                username=username,
+                is_admin=False,
+                email=email,
+                phone_number=number,
+                contact_email=kwargs.get('contact_email'),
+                contact_call=kwargs.get('contact_call'),
+                contact_text=kwargs.get('contact_text'),
+                first_name=kwargs.get('first_name'),
+                last_name=kwargs.get('last_name'),
+                zip_code=kwargs.get('zip_code'),
+                is_paying=kwargs.get('is_paying')
+            )
 
         account.set_password(kwargs.get('password'))
         account.save()
@@ -55,7 +82,7 @@ class Account(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     is_paying = models.BooleanField(default=False)
-    payment_amount = models.FloatField(null=True)
+    payment_amount = models.FloatField(null=True, blank=True)
 
     objects = AccountManager()
 
