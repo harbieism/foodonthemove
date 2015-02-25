@@ -9,8 +9,25 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
 import os
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_foodonthemove',
+        'USER': 'foodonthemove',
+        'PASSWORD': 'taylorisgreat',
+        'HOST': ''
+    }
+}
+
+DATABASES['default'] = dj_database_url.config()
+
+DATABASES['default']['ENGINE'] = 'django_postgrespool'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,15 +77,7 @@ WSGI_APPLICATION = 'FoodOnTheMove.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_foodonthemove',
-        'USER': 'foodonthemove',
-        'PASSWORD': 'taylorisgreat',
-        'HOST': ''
-    }
-}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
@@ -87,7 +96,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -98,10 +106,8 @@ STATICFILES_DIRS = (
         'static',
     ),
 )
-
-PROJECT_DIR = os.path.dirname(__file__)
-
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 AUTH_USER_MODEL = 'foodonthemove.Account'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
