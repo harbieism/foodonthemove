@@ -32,10 +32,10 @@ def register(request):
         username = request.POST.get("username")
         phone_number = request.POST.get("phoneNumber")
         userType = request.POST.get("userType")
-        if userType == 0:
-            username = email
-        elif userType == 1:
-            username = phone_number
+        if int(userType) == 0:
+            username = str(email)
+        elif int(userType) == 1:
+            username = str(phone_number)
 
         if (request.POST.get("contactEmail") == "on"):
             contact_email = True
@@ -58,24 +58,38 @@ def register(request):
         zip_code = request.POST.get("zipCode")
 
         is_paying = request.POST.get('inputPayment')
-        payment_amount = request.POST.get('inputAmount')
+        if is_paying == '0':
+            is_paying = False
+        else:
+            is_paying = True
 
+        payment_amount = request.POST.get('inputAmount')
         meals = request.POST.get('inputMeals')
         password = request.POST.get('passwordValue')
         password_confirm = request.POST.get('passwordConfirmValue')
         account = get_account(username)
         if password == password_confirm:
             if account is None:
-                account = Account.objects.create_user(
-                    username=username, email=email, phone_number=phone_number,
-                    contact_email=contact_email, contact_call=contact_call,
-                    contact_text=contact_text, first_name=first_name,
-                    last_name=last_name, zip_code=zip_code,
-                    is_paying=is_paying, payment_amount=payment_amount,
-                    password=password
-                )
+                if is_paying:
+                    account = Account.objects.create_user(
+                        username=username, email=email, phone_number=phone_number,
+                        contact_email=contact_email, contact_call=contact_call,
+                        contact_text=contact_text, first_name=first_name,
+                        last_name=last_name, zip_code=zip_code,
+                        is_paying=is_paying, payment_amount=payment_amount,
+                        password=password
+                    )
+                else:
+                    account = Account.objects.create_user(
+                        username=username, email=email, phone_number=phone_number,
+                        contact_email=contact_email, contact_call=contact_call,
+                        contact_text=contact_text, first_name=first_name,
+                        last_name=last_name, zip_code=zip_code,
+                        is_paying=is_paying,
+                        password=password
+                    )
                 print account
-
+        
         return HttpResponseRedirect(reverse('index'))
 
 
