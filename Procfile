@@ -1,0 +1,1 @@
+web: gunicorn FoodOnTheMove.wsgi --log-file -
