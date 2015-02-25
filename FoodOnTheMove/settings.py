@@ -99,6 +99,7 @@ STATICFILES_DIRS = (
     ),
 )
 
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 AUTH_USER_MODEL = 'foodonthemove.Account'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
