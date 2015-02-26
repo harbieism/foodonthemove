@@ -11,6 +11,8 @@ from django.core.context_processors import csrf
 
 
 def index(request):
+    if not request.user.is_authenticated():
+        return redirect('/user_login')
     account_list = Account.objects.all()
     context = {'account_list': account_list}
     return render(request, 'foodonthemove/index.html', context)
@@ -46,8 +48,6 @@ def user_login(request):
 
 
 def list_ticket(request):
-    if not request.user.is_authenticated():
-        return redirect('/user_login')
     account_list = Account.objects.filter(is_admin=False)
     serialized = AccountSerializer(account_list, many=True)
     json_account = JSONRenderer().render(serialized.data)
