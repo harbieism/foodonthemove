@@ -24,7 +24,7 @@ DATABASES = {
 
 DATABASES['default'] = dj_database_url.config(default='postgres://foodonthemove:taylorisgreat@localhost/db_foodonthemove')
 
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
