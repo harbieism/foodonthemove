@@ -17,7 +17,7 @@ def get_account(username):
         return None
 
 def list_ticket(request):
-    account_list = Account.objects.all()
+    account_list = Account.objects.filter(is_admin=False)
     serialized = AccountSerializer(account_list, many=True)
     json_account = JSONRenderer().render(serialized.data)
     print "Yes"
@@ -87,7 +87,6 @@ def register(request):
                         is_paying=is_paying,
                         password=password
                     )
-                print account
 
         return HttpResponseRedirect(reverse('index'))
 
