@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from foodonthemove.models import Account
 from django.core.urlresolvers import reverse
 from foodonthemove.serializers import AccountSerializer
@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from rest_framework.renderers import JSONRenderer
 from django.utils import timezone
 import json
+from django.core.context_processors import csrf
 
 
 def index(request):
@@ -31,7 +32,7 @@ def user_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('/')
+                return HttpResponseRedirect(reverse('index'))
             else:
                 error = {"Error": "disabled_account"}
                 error_json = json.dumps(error)
@@ -45,6 +46,8 @@ def user_login(request):
 
 
 def list_ticket(request):
+    if not request.user.is_authenticated():
+        return redirect('/user_login')
     account_list = Account.objects.filter(is_admin=False)
     serialized = AccountSerializer(account_list, many=True)
     json_account = JSONRenderer().render(serialized.data)
