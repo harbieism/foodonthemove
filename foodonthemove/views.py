@@ -3,7 +3,11 @@ from foodonthemove.models import Account
 from django.core.urlresolvers import reverse
 from foodonthemove.serializers import AccountSerializer
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 from rest_framework.renderers import JSONRenderer
+from django.utils import timezone
+import json
+
 
 def index(request):
     account_list = Account.objects.all()
@@ -15,6 +19,30 @@ def get_account(username):
         return Account.objects.get(username=username)
     except Account.DoesNotExist:
         return None
+
+
+def user_login(request):
+    if request.method == 'GET':
+        return render(request, 'foodonthemove/user_login.html')
+    else:
+        username = request.POST.get("username", "")
+        password = request.POST.get("password", "")
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('/')
+            else:
+                error = {"Error": "disabled_account"}
+                error_json = json.dumps(error)
+                return HttpResponse(error_json, content_type="application/json")
+        else:
+            error = {"Error": "invalid_login"}
+            error_json = json.dumps(error)
+            return HttpResponse(error_json, content_type="application/json")
+
+
+
 
 def list_ticket(request):
     account_list = Account.objects.filter(is_admin=False)
