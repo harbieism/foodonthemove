@@ -54,10 +54,12 @@ class AccountManager(BaseUserManager):
         return account
 
     def create_superuser(self, username, password, **kwargs):
+        from django.db import connection
+        curs = connection.cursor()
+        curs.execute('SET autocommit = 1')
         account = self.create_user(username=username, password=password, **kwargs)
 
         account.is_admin = True
-        account.is_staff = True
         account.save()
 
         return account
