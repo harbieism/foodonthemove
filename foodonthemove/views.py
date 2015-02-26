@@ -12,7 +12,7 @@ from django.core.context_processors import csrf
 
 def index(request):
     if not request.user.is_authenticated():
-        return redirect('/user_login')
+        return redirect('/food/user_login')
     account_list = Account.objects.all()
     context = {'account_list': account_list}
     return render(request, 'foodonthemove/index.html', context)
