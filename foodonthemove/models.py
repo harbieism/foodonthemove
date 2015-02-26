@@ -57,6 +57,7 @@ class AccountManager(BaseUserManager):
         account = self.create_user(**kwargs)
 
         account.is_admin = True
+        account.is_staff = True
         account.save()
 
         return account
@@ -87,7 +88,7 @@ class Account(AbstractBaseUser):
     objects = AccountManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     def __unicode__(self):
         return self.username
@@ -104,7 +105,7 @@ class Account(AbstractBaseUser):
 
     @property
     def is_staff(self):
-      return self.is_admin
+      return self.is_staff
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
