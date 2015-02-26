@@ -22,7 +22,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config()
+DATABASES['default'] = dj_database_url.config(default='postgres://foodonthemove:taylorisgreat@localhost/db_foodonthemove')
 
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
