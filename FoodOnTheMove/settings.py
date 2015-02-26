@@ -69,6 +69,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
 ROOT_URLCONF = 'FoodOnTheMove.urls'
 
 WSGI_APPLICATION = 'FoodOnTheMove.wsgi.application'
